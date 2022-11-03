@@ -1,0 +1,152 @@
+################################
+# Gestion des tags             #
+################################
+-tag
+docker tag busybox busybox:mytag
+dcoker create --name yass debian 
+docker rmi busybox
+
+-recuperation + sauvegarde + chargement 
+docker pull debian
+docker save debian > debian .tar
+docker load < busybox.tar
+
+################################
+# Gestion du daemon de docker  #
+################################
+systemctl start/stop/restart docker
+systemctl enable docker
+
+##################################
+# Gestion utilisateurs de docker #
+##################################
+adduser docker
+groupadd docker
+usermod -aG docker $USER
+docker ps
+
+################################
+# Rechercher une image         #
+################################
+docker search nginx
+docker search ubuntu --filter "is-official=true"      
+docker search --stars=10 debian
+docker search --filter stars=3 --no-trunc nginx
+docker create --name web debian 
+
+###############################
+# Lister les  images docker   #
+###############################
+docker image ls
+docker images
+docker ps -a 
+
+###############################
+# lancement conteneur        #
+##############################
+-creation docker
+docker create debian
+docker container run -it --name test -d netdata/netdata
+docker container create -t -i yass/debian --name  yasss
+docker container run --name yass -it -p 3000:80 -v ${PWD}:/data debian:latest
+
+-gestion conteneur 
+docker container start nginx
+docker container stop nginx
+docker container restart nginx
+
+-gestion log/event/stats du conteneur 
+docker system events infinite
+docker container port infinite
+docker container top infinite
+docker container stats infinite
+
+###########################################
+# Gestion lancement conteneur + shell     #
+###########################################
+docker run -ti ubuntu:latest
+apt-get update -y && apt-get install -y git
+
+###############################
+# Gestion des shell docker    #
+###############################
+-1
+docker exec -it yass sh
+docker exec  yass bash -c "command1 ; command2 ; command3"
+docker container exec -ti 0fb5783ea907 bash
+-2
+docker container run -d -p 9001:80 nginx
+docker run -ti ubuntu:latest
+docker run --name yass -p 8080:80 httpd:latest
+-3
+docker run -d --name yass -p 8080:80 nginx
+docker exec -it yass  /bin/bash
+
+
+################################
+# Gestion des build dockerfile #
+################################
+-vide tout les docker
+docker system prune
+
+-création nom docker conteneur + lancement du conteneur 
+nano DokerFile
+docker build -t yass .
+docker run -d -p 2368:2368 yasss
+
+############################################
+# Lancement du container (présentation) 2  #
+############################################
+docker container run --name yasstest-it -p 3000:80 -v ${PWD}:/data ubuntu:latest
+docker container create -t -i yasstest/debian --name yasstest
+docker container run -it --name yasstest  -d yasstest/debian
+docker container rm yasstest
+
+##############################################
+# lancement conteneur avec parametre réseaux #
+###############################################
+
+docker network create --subnet 103.0.113.0/24 --gateway 103.0.113.254 ip
+docker run --rm -it --net ip debian
+
+
+
+
+
+------------ github
+##############################
+# Configuration de github    #
+##############################
+creation du compte github : https://github.com/yasscberdevops/dockerarchitecture/tree/main
+1-Crée le répertoire avec nom et en mode public 
+2-Description du répertoire 
+
+
+apt install git
+git config --global user.name “yasscberdevops”
+git config --global user.email yasscberdevops@gmail.com
+git config --global init.defaultBranch main
+git config -l
+
+# creation de la clée
+ssh-keygen -t rsa -b 4096 -C "yasscberdevops@gmail.com"
+
+# vérification des clées
+cd ~/.ssh
+ls
+# demarrer les demon ssh + ajout yasscberdevops@gmail.com
+eval "$(ssh-agent -s)"
+ssh-add ~/.ssh/id_rsa
+cat /root/.ssh/id_rsa.pub
+# vérifier
+--> github - onglet-->setting - onglet-->ssh - ajout de clée publique
+
+# Test 
+mkdir project
+git clone git@github.com:yasscberdevops/dockerarchitecture.git
+cd yasscberdevops
+nano server.js
+git status
+git add server.js
+git commit -m test
+git push
